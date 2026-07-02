@@ -529,26 +529,19 @@ function set(i,status){
 
 
 // DOWNLOAD
-function downloadCSV(){
+async function downloadCSV(){
 
-let k =
-document.getElementById("kelas").value;
+    let k =
+    document.getElementById("kelas").value;
 
-let csv = "";
+    const res = await fetch(
+        API + "?download=1&kelas=" + k
+    );
 
-csv += "DATA ABSENSI SISWA\n";
-csv += "KELAS " + k + "\n";
+    const csv =
+    await res.text();
 
-csv += "NO;NIS;NAMA;L/P;STATUS\n";
-
-dataSiswa.forEach(d=>{
-
-    csv +=
-    `${d.no};${d.nis};${d.nama};${d.jk};${d.status || "H"}\n`;
-
-});
-
-Android.downloadCSV(csv);
+    Android.downloadCSV(csv);
 
 }
 
