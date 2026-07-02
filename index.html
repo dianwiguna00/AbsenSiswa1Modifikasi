@@ -358,7 +358,7 @@ Download Kelas
 
 // ✅ contoh data (lanjutkan)
 const API =
-"https://script.google.com/macros/s/AKfycbw7oXRw40Tnujv5oYb4W9aV1flytveUFP1fQqJF3jsQueQEWM9Vcmn-UoflubPSd1Ie/exec";
+"https://script.google.com/macros/s/AKfycbyrT9w-wDLYEziw60EGQijjBr0vkP3Wt9dO8Upg7veof7w40gWkRw_vU2iVnPPLIiu4/exec";
 
 let dataSiswa = [];
 
@@ -534,14 +534,24 @@ async function downloadCSV(){
     let k =
     document.getElementById("kelas").value;
 
-    const res = await fetch(
-        API + "?download=1&kelas=" + k
-    );
+    try{
 
-    const csv =
-    await res.text();
+        const res = await fetch(
+            API + "?download=1&kelas=" + k
+        );
 
-    Android.downloadCSV(csv);
+        const csv =
+        await res.text();
+
+        Android.downloadCSV(csv);
+
+    }catch(err){
+
+        alert(
+            "Gagal download data"
+        );
+
+    }
 
 }
 
