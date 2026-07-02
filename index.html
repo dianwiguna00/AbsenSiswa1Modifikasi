@@ -358,7 +358,7 @@ Download Kelas
 
 // ✅ contoh data (lanjutkan)
 const API =
-"https://script.google.com/macros/s/AKfycbyrT9w-wDLYEziw60EGQijjBr0vkP3Wt9dO8Upg7veof7w40gWkRw_vU2iVnPPLIiu4/exec";
+"https://script.google.com/macros/s/AKfycbzZbRftE1SWTMVhrRJSMq44slLb-3GnS7hvsQmDBRXjwrtNWVW3MLC-vVjXHkYM4lXs/exec";
 
 let dataSiswa = [];
 
@@ -370,23 +370,22 @@ async function loadSiswa(){
     try{
 
         const res =
-await fetch(
-    API + "?kelas=" + k
-);
+        await fetch(
+            API + "?kelas=" + k
+        );
 
-const data =
-await res.json();
+        const data =
+        await res.json();
 
         dataSiswa = data.map(d=>({
 
-    kelas:k,
-    no:d.no,
-    nis:d.nis,
-    nama:d.nama,
-    jk:d.jk,
-    status:"H"
+            no:d.no,
+            nis:d.nis,
+            nama:d.nama,
+            jk:d.jk,
+            status:"H"
 
-}));
+        }));
 
         render();
 
@@ -536,19 +535,29 @@ async function downloadCSV(){
 
     try{
 
-        const res = await fetch(
-            API + "?download=1&kelas=" + k
+        const response =
+        await fetch(
+            API + "?rekap=" + k
         );
 
-        const csv =
-        await res.text();
+        const data =
+        await response.json();
+
+        let csv = "";
+
+        data.forEach(row=>{
+
+            csv +=
+            row.join(";") + "\n";
+
+        });
 
         Android.downloadCSV(csv);
 
     }catch(err){
 
         alert(
-            "Gagal download data"
+            "Gagal mengunduh rekap"
         );
 
     }
