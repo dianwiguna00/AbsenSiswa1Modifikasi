@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Absensi Sekolah</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-size:20px;
+}
+
+
+body{
+    font-family:'Segoe UI',Tahoma,sans-serif;
+    background:#eef2f7;
+    color:#333;
+}
+
+.header{
+    background:linear-gradient(135deg,#0d6efd,#0a58ca);
+    color:#fff;
+    text-align:center;
+    padding:20px;
+    font-size:26px;
+    font-weight:600;
+    letter-spacing:1px;
+    box-shadow:0 4px 12px rgba(0,0,0,.15);
+}
+
+.container{
+    max-width:1300px;
+    margin:auto;
+    padding:20px;
+}
+
+.card{
+    background:#fff;
+    border-radius:16px;
+    padding:20px;
+    margin-bottom:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.form-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+select,input{
+    flex:1;
+    min-width:150px;
+    padding:12px;
+    border:1px solid #d9dee5;
+    border-radius:10px;
+    font-size:20px;
+}
+
+select:focus,
+input:focus{
+    outline:none;
+    border-color:#0d6efd;
+    box-shadow:0 0 0 3px rgba(13,110,253,.2);
+}
+
+.button-group{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:15px;
+}
+
+button{
+    border:none;
+    border-radius:10px;
+    padding:6px 10px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+}
+
+.btn-save{
+    background:#198754;
+    color:white;
+}
+
+.btn-edit{
+    background:#ffc107;
+    color:black;
+}
+
+.btn-clear{
+    background:#dc3545;
+    color:white;
+}
+
+.btn-download{
+    background:#0d6efd;
+    color:white;
+}
+
+.h{
+    background:#198754;
+    color:white;
+}
+
+.s{
+    background:#ffc107;
+}
+
+.i{
+    background:#0dcaf0;
+    color:white;
+}
+
+.a{
+    background:#dc3545;
+    color:white;
+}
+
+.active{
+    border:3px solid #000;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.stat-card{
+    background:#fff;
+    padding:20px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.stat-card h2{
+    font-size:34px;
+}
+
+.stat-h h2{
+    color:#198754;
+}
+
+.stat-s h2{
+    color:#ffc107;
+}
+
+.stat-i h2{
+    color:#0dcaf0;
+}
+
+.stat-a h2{
+    color:#dc3545;
+}
+
+.kelas-box{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(90px,1fr));
+    gap:8px;
+    margin-top:15px;
+}
+
+.kelas-box label{
+    background:#f8f9fa;
+    border:1px solid #ddd;
+    border-radius:10px;
+    padding:10px;
+}
+
+.table-container{
+    overflow:auto;
+    border-radius:12px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    table-layout:auto;
+}
+
+th{
+    background:#0d6efd;
+    color:white;
+    padding:6px 8px;
+    white-space:nowrap;
+}
+
+td{
+    padding:4px 6px;
+    border-bottom:1px solid #eee;
+    text-align:center;
+    white-space:nowrap;
+}
+
+tr:nth-child(even){
+    background:#f8f9fa;
+}
+
+tr:hover{
+    background:#e9f2ff;
+}
+
+#rekapHarian{
+    margin-top:15px;
+    padding:15px;
+    background:#e9f2ff;
+    border-radius:10px;
+    font-weight:bold;
+}
+
+@media(max-width:768px){
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .button-group{
+        flex-direction:column;
+    }
+
+    button{
+        width:100%;
+    }
+
+    .header{
+        font-size:20px;
+    }
+}
+
+th:first-child,
+td:first-child{
+    width:50px;
+}
+
+th:nth-child(4),
+td:nth-child(4){
+    width:60px;
+}
+
+th:nth-child(5),
+td:nth-child(5),
+th:nth-child(6),
+td:nth-child(6),
+th:nth-child(7),
+td:nth-child(7),
+th:nth-child(8),
+td:nth-child(8){
+    width:55px;
+}
+
+.h,.s,.i,.a{
+    min-width:40px;
+    padding:4px 8px;
+}
+
+td:nth-child(3){
+    text-align:left;
+    padding-right:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">ABSENSI SISWA</div>
+
+<div class="container">
+
+<div class="stats">
+
+    <div class="stat-card stat-h">
+        <h2 id="jmlH">0</h2>
+        <p>Hadir</p>
+    </div>
+
+    <div class="stat-card stat-s">
+        <h2 id="jmlS">0</h2>
+        <p>Sakit</p>
+    </div>
+
+    <div class="stat-card stat-i">
+        <h2 id="jmlI">0</h2>
+        <p>Izin</p>
+    </div>
+
+    <div class="stat-card stat-a">
+        <h2 id="jmlA">0</h2>
+        <p>Alpa</p>
+    </div>
+
+</div>
+
+<div class="card">
+
+<select id="kelas" onchange="loadSiswa()">
+<option>7A</option>
+<option>7B</option>
+<option>7C</option>
+<option>7D</option>
+<option>7E</option>
+<option>7F</option>
+<option>7G</option>
+<option>7H</option>
+<option>7I</option>
+</select>
+
+<input id="tgl" type="date">
+
+<button class="btn-save" onclick="save()">Simpan</button>
+
+<button class="btn-download" onclick="downloadCSV()">
+Download Kelas
+</button>
+
+</div>
+
+<div class="card">
+
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>No</th>
+<th>NIS</th>
+<th>Nama</th>
+<th>L/P</th>
+<th>H</th>
+<th>S</th>
+<th>I</th>
+<th>A</th>
+</tr>
+</thead>
+<tbody id="tbody"></tbody>
+</table>
+</div>
+
+<div id="rekapHarian" style="font-weight:bold;"></div>
+
+</div>
+
+</div>
+
+<script>
+
+
+// ✅ contoh data (lanjutkan)
+const API =
+"https://script.google.com/macros/s/AKfycbyENH6T0shYXMQcWNYXgesuY31kIlrH748U-8e1megA4RzoTBa2S9veELEAQ3X20wOb/exec";
+
+let dataSiswa = [];
+
+async function loadSiswa(){
+
+    let k =
+    document.getElementById("kelas").value;
+
+    try{
+
+        const res =
+        await fetch(
+            API + "?kelas=" + k
+        );
+
+        const data =
+        await res.json();
+
+        dataSiswa = data.map(d=>({
+
+    kelas:k,
+    no:d.no,
+    nis:d.nis,
+    nama:d.nama,
+    jk:d.jk,
+    status:"H"
+
+}));
+
+        render();
+
+    }catch(err){
+
+        alert(
+            "Gagal mengambil data siswa"
+        );
+
+    }
+
+}
+
+// SAVE
+async function save(){
+
+    if(!document.getElementById("tgl").value){
+
+        alert("Pilih tanggal terlebih dahulu");
+        return;
+
+    }
+
+    try{
+
+        let data = {
+
+            kelas:
+            document.getElementById("kelas").value,
+
+            tanggal:
+            document.getElementById("tgl").value,
+
+            absensi:
+            dataSiswa.map(d=>({
+
+                nis:d.nis,
+                nama:d.nama,
+                jk:d.jk,
+                status:
+d.status || "H"
+
+            }))
+
+        };
+
+        let res =
+        await fetch(API,{
+
+            method:"POST",
+
+            body:
+            JSON.stringify(data)
+
+        });
+
+        await res.text();
+
+        alert("✅ Data berhasil disimpan");
+
+    }catch(err){
+
+        alert("❌ Gagal menyimpan");
+
+    }
+
+}
+
+
+// AUTO HADIR
+function autoHadir(){
+
+    dataSiswa.forEach(d=>{
+
+        if(!d.status){
+
+            d.status = "H";
+
+        }
+
+    });
+
+}
+
+// RENDER
+function render(){
+
+let k = kelas.value;
+let t = tgl.value;
+if(!t) return;
+
+autoHadir();
+
+let tbody="";
+let h=0,s=0,i=0,a=0;
+
+dataSiswa.forEach((d,iIdx)=>{
+if(d.kelas==k){
+
+let st = d.status || "H";
+
+if(st=="H")h++;
+if(st=="S")s++;
+if(st=="I")i++;
+if(st=="A")a++;
+
+tbody+=`
+<tr>
+<td>${d.no}</td>
+<td>${d.nis}</td>
+<td>${d.nama}</td>
+<td>${d.jk}</td>
+<td><button class="h ${st=='H'?'active':''}" onclick="set(${iIdx},'H')">H</button></td>
+<td><button class="s ${st=='S'?'active':''}" onclick="set(${iIdx},'S')">S</button></td>
+<td><button class="i ${st=='I'?'active':''}" onclick="set(${iIdx},'I')">I</button></td>
+<td><button class="a ${st=='A'?'active':''}" onclick="set(${iIdx},'A')">A</button></td>
+</tr>`;
+}
+});
+
+document.getElementById("tbody").innerHTML = tbody;
+
+// REKAP HARIAN
+document.getElementById("rekapHarian").innerHTML =
+"Tanggal "+t+" → H:"+h+" | S:"+s+" | I:"+i+" | A:"+a;
+document.getElementById("jmlH").innerText = h;
+document.getElementById("jmlS").innerText = s;
+document.getElementById("jmlI").innerText = i;
+document.getElementById("jmlA").innerText = a;
+
+}
+
+function set(i,status){
+
+    dataSiswa[i].status = status;
+
+    render();
+
+}
+
+
+// DOWNLOAD
+function downloadCSV(){
+
+let k =
+document.getElementById("kelas").value;
+
+let csv = "";
+
+csv += "DATA ABSENSI SISWA\n";
+csv += "KELAS " + k + "\n";
+
+csv += "NO;NIS;NAMA;L/P;STATUS\n";
+
+dataSiswa.forEach(d=>{
+
+    csv +=
+    `${d.no};${d.nis};${d.nama};${d.jk};${d.status || "H"}\n`;
+
+});
+
+Android.downloadCSV(csv);
+
+}
+
+
+// START
+window.onload=function(){
+
+document.getElementById("tgl").value =
+new Date().toISOString().split("T")[0];
+
+loadSiswa();
+
+}
+
+</script>
+
+</body>
+</html>
