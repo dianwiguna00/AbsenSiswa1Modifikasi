@@ -370,12 +370,12 @@ async function loadSiswa(){
     try{
 
         const res =
-        await fetch(
-            API + "?download=1&kelas=" + k
-        );
+await fetch(
+    API + "?kelas=" + k
+);
 
-        const data =
-        await res.json();
+const data =
+await res.json();
 
         dataSiswa = data.map(d=>({
 
